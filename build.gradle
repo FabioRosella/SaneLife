@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'it.uniupo.reti2'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // OAuth client library
+    implementation 'com.google.oauth-client:google-oauth-client:1.28.0'
+    // Jetty extension for the OAuth client library (as local webserver)
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.28.0'
+    // gson support for the OAuth client library
+    implementation 'com.google.http-client:google-http-client-gson:1.28.0'
+}
