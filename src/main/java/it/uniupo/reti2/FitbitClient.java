@@ -19,18 +19,17 @@ public class FitbitClient {
     //------------------------------------------------------------------------------------------------------------------
 
     private static void run(HttpRequestFactory requestFactory) throws IOException {
-        // the URL to call
+        // Url da chiamare (API)
         GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/date/2019-03-21.json");
-        // perform a GET request
+        // Get request
         HttpRequest request = requestFactory.buildGetRequest(url);
 
-        // get the response as a JSON (and put it in a string)
         String jsonResponse = request.execute().parseAsString();
 
-        // parse the JSON string in POJO thanks to gson
+        // Serializza l'oggetto Json che arriva come risposta
         Activities activities = gson.fromJson(jsonResponse, Activities.class);
 
-        // print out the steps of the first activity (e.g., 1000 steps for a walk)
+        // Stampa i passi della giornata ricevuti dall'oggetto JSON
         System.out.println(activities.getActivities().get(0).getSteps() + " passi");
 
     }
@@ -42,7 +41,7 @@ public class FitbitClient {
     public static void main(String[] args) {
         try {
             // Crea l'autorizzazione con un flusso
-            final Credential credential = OAuthCredentials.authorize();
+            /*final Credential credential = OAuthCredentials.authorize();
             // inizializza la richiesta
             HttpRequestFactory requestFactory =
                     OAuthCredentials.getHttpTransport().createRequestFactory((HttpRequest request) -> {
@@ -50,16 +49,48 @@ public class FitbitClient {
                         request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
                     });
             // Siamo Loggati
-            run(requestFactory);
+            run(requestFactory);*/
             // Success!
+            test();
             return;
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
         }
         System.exit(1);
 
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Funzione di test per i thread
+    //------------------------------------------------------------------------------------------------------------------
+    private static void test(){
+
+        System.out.print("Questa e' una funzione di test per i thread");
+
+        Thread monitoringThread = new Thread(() -> {
+            try{
+                printSomething();
+            }
+            catch(Exception e){
+                System.err.println(e.getMessage());
+            }
+        });
+
+        monitoringThread.start();
+    }
+
+    private static void printSomething(){
+        try {
+            while (true) {
+                System.out.println("TEST");
+                Thread.sleep(1000);
+            }
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }
 

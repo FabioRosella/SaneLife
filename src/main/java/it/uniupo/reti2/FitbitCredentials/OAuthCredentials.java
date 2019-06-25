@@ -46,7 +46,7 @@ public final class OAuthCredentials {
     public static HttpTransport getHttpTransport() { return HTTP_TRANSPORT; }
 
     //------------------------------------------------------------------------------------------------------------------
-    //Implements the Authorization Code Grant Flow of OAuth 2.0, for Fitbit.
+    // Implementa l'autorizzazione Code Grant Flow of OAuth 2.0, per il Fitbit.
     //------------------------------------------------------------------------------------------------------------------
 
     public static Credential authorize() throws Exception {
