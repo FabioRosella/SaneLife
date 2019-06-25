@@ -20,4 +20,6 @@ dependencies {
     implementation 'com.google.oauth-client:google-oauth-client-jetty:1.28.0'
     // gson support for the OAuth client library
     implementation 'com.google.http-client:google-http-client-gson:1.28.0'
+    //support apace library
+    implementation 'org.apache.httpcomponents:httpclient:4.5.9'
 }
