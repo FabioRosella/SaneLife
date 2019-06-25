@@ -5,7 +5,8 @@ import com.google.api.client.http.*;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.gson.Gson;
 import it.uniupo.reti2.FitbitCredentials.OAuthCredentials;
-import it.uniupo.reti2.Models.Activities;
+import it.uniupo.reti2.Models.Activities.Activities;
+import it.uniupo.reti2.Models.Profile.Profile;
 
 import java.io.IOException;
 
@@ -25,14 +26,13 @@ public class FitbitClient {
         HttpRequest request = requestFactory.buildGetRequest(url);
 
         String jsonResponse = request.execute().parseAsString();
-        
+
         //System.out.println("DEBUG " + jsonResponse);
         // Serializza l'oggetto Json che arriva come risposta
         Activities activities = gson.fromJson(jsonResponse, Activities.class);
 
         // Stampa i passi della giornata ricevuti dall'oggetto JSON
         System.out.println(activities.getSummary().getSteps() + " passi");
-
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -50,6 +50,7 @@ public class FitbitClient {
                         request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
                     });
             // Siamo Loggati
+            Profile(requestFactory);
             run(requestFactory);
             // Success!
             return;
@@ -60,6 +61,26 @@ public class FitbitClient {
         }
         System.exit(1);
 
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Recupera i dati dell'account del paziente così da stampare nome peso ecc..
+    //------------------------------------------------------------------------------------------------------------------
+
+    public static void Profile(HttpRequestFactory requestFactory) throws IOException {
+
+        GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/profile.json");
+        // Get request
+        HttpRequest request = requestFactory.buildGetRequest(url);
+
+        String jsonResponse = request.execute().parseAsString();
+
+        Profile profile = gson.fromJson(jsonResponse, Profile.class);
+
+        System.out.println("\nNome del paziente : " + profile.getUser().getName() + " \n " +
+                           "Eta' : " + profile.getUser().getAge() + " anni\n " +
+                           "Peso : " + profile.getUser().getWeight() + " kg\n\n"
+        );
     }
 
     //------------------------------------------------------------------------------------------------------------------

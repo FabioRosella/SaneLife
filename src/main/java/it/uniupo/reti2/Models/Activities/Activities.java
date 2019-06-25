@@ -1,6 +1,4 @@
-package it.uniupo.reti2.Models;
-
-import java.util.ArrayList;
+package it.uniupo.reti2.Models.Activities;
 
 public class Activities {
 
