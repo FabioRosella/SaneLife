@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 public final class OAuthCredentials {
 
-    private static final String CLIENT_ID = "22DLSD";
-    private static final String CLIENT_SECRET = "d0ea470d22bdddb1d3b9e87a4c885f17";
+    private static final String CLIENT_ID = "22DLXH";
+    private static final String CLIENT_SECRET = "60333f59d244b6decc6dbd07c6c30951";
     private static final int PORT = 6789;
     private static final String DOMAIN = "localhost";
 
@@ -40,13 +40,13 @@ public final class OAuthCredentials {
 
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private static File DATA_STORE_DIR = new File(System.getProperty("user.dir"), "userToken");
+    private static File DATA_STORE_DIR = new File(System.getProperty("user"), "userToken");
 
     public static JsonFactory getJsonFactory() { return JSON_FACTORY; }
     public static HttpTransport getHttpTransport() { return HTTP_TRANSPORT; }
 
     //------------------------------------------------------------------------------------------------------------------
-    // Implementa l'autorizzazione Code Grant Flow of OAuth 2.0, per il Fitbit.
+    // Implementa l'autorizzazione Code Grant Flow of OAuth 2.0, per il  Fitbit.
     //------------------------------------------------------------------------------------------------------------------
 
     public static Credential authorize() throws Exception {

@@ -20,17 +20,18 @@ public class FitbitClient {
 
     private static void run(HttpRequestFactory requestFactory) throws IOException {
         // Url da chiamare (API)
-        GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/date/2019-03-21.json");
+        GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/date/2018-05-24.json");
         // Get request
         HttpRequest request = requestFactory.buildGetRequest(url);
 
         String jsonResponse = request.execute().parseAsString();
-
+        
+        //System.out.println("DEBUG " + jsonResponse);
         // Serializza l'oggetto Json che arriva come risposta
         Activities activities = gson.fromJson(jsonResponse, Activities.class);
 
         // Stampa i passi della giornata ricevuti dall'oggetto JSON
-        System.out.println(activities.getActivities().get(0).getSteps() + " passi");
+        System.out.println(activities.getSummary().getSteps() + " passi");
 
     }
 
@@ -41,7 +42,7 @@ public class FitbitClient {
     public static void main(String[] args) {
         try {
             // Crea l'autorizzazione con un flusso
-            /*final Credential credential = OAuthCredentials.authorize();
+            final Credential credential = OAuthCredentials.authorize();
             // inizializza la richiesta
             HttpRequestFactory requestFactory =
                     OAuthCredentials.getHttpTransport().createRequestFactory((HttpRequest request) -> {
@@ -49,11 +50,10 @@ public class FitbitClient {
                         request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
                     });
             // Siamo Loggati
-            run(requestFactory);*/
+            run(requestFactory);
             // Success!
-            test();
             return;
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
@@ -65,7 +65,7 @@ public class FitbitClient {
     //------------------------------------------------------------------------------------------------------------------
     // Funzione di test per i thread
     //------------------------------------------------------------------------------------------------------------------
-    private static void test(){
+    /*private static void test(){
 
         System.out.print("Questa e' una funzione di test per i thread");
 
@@ -91,7 +91,7 @@ public class FitbitClient {
         catch(Exception e){
             System.err.println(e.getMessage());
         }
-    }
+    }*/
 }
 
 
