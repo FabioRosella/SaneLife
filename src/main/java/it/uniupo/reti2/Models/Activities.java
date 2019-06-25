@@ -1,4 +1,4 @@
-package it.uniupo.reti2.model;
+package it.uniupo.reti2.Models;
 
 import java.util.ArrayList;
 
