@@ -1,8 +1,9 @@
 package it.uniupo.reti2;
 
-/**
- * Class to store all the credentials/URLs needed for OAuth 2.0 at Fitbit
- */
+//----------------------------------------------------------------------------------------------------------------------
+// Classe che salva tutte le credenziali e dati necessari per l'autenticazione con il Fitbit
+//----------------------------------------------------------------------------------------------------------------------
+
 public final class OAuthCredentials {
 
     // sample client id, as provided by Fitbit

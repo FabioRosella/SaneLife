@@ -24,7 +24,7 @@ public class FitbitClient {
     private static File DATA_STORE_DIR = new File(System.getProperty("user.dir"), "userToken");
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
-    // the "scope" of the authorization: we would like to access activities, heartrates, location, etc.
+    // Scopo dell'autorizzazione: a cosa vogliamo accedere activities, heartrates, location, etc.
     private static final ArrayList<String> SCOPE =  new ArrayList<String>()
     {{
         add("activity"); add("heartrate"); add("location"); add("nutrition");
@@ -35,9 +35,10 @@ public class FitbitClient {
     private static final JsonFactory JSON_FACTORY = new GsonFactory();
     private static final Gson gson = new Gson();
 
-    /**
-     * Implements the Authorization Code Grant Flow of OAuth 2.0, for Fitbit.
-     */
+    //------------------------------------------------------------------------------------------------------------------
+    //Implements the Authorization Code Grant Flow of OAuth 2.0, for Fitbit.
+    //------------------------------------------------------------------------------------------------------------------
+
     private static Credential authorize() throws Exception {
         // build the authorization flow, set scope and datastore
         AuthorizationCodeFlow flow = new AuthorizationCodeFlow.Builder(
@@ -60,9 +61,11 @@ public class FitbitClient {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    /**
-     * Handles the request to the FitBit API. In this case, it requests all the user's activities in a given day.
-     */
+    //------------------------------------------------------------------------------------------------------------------
+    // Effettua la richiesta al FitBit.
+    // In questo caso, restituisce tutte le attività dell'utente per un giorno specifico.
+    //------------------------------------------------------------------------------------------------------------------
+
     private static void run(HttpRequestFactory requestFactory) throws IOException {
         // the URL to call
         GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/date/2019-03-21.json");
@@ -72,9 +75,6 @@ public class FitbitClient {
         // get the response as a JSON (and put it in a string)
         String jsonResponse = request.execute().parseAsString();
 
-        // debug
-        //System.out.println("[DEBUG] " + jsonResponse);
-
         // parse the JSON string in POJO thanks to gson
         Activities activities = gson.fromJson(jsonResponse, Activities.class);
 
@@ -83,6 +83,9 @@ public class FitbitClient {
 
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    // MAIN
+    //------------------------------------------------------------------------------------------------------------------
 
     public static void main(String[] args) {
         try {
@@ -106,7 +109,6 @@ public class FitbitClient {
         System.exit(1);
 
     }
-
 }
 
 

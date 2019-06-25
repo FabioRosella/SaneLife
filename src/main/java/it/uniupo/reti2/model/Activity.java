@@ -1,20 +1,20 @@
 package it.uniupo.reti2.model;
 
-/**
- * Represents an activity, according to the Fitbit Web API
- */
+  //--------------------------------------------------------------------------------------------------------------------
+  // Rappresenta un attività di una giornata
+  //--------------------------------------------------------------------------------------------------------------------
+
 public class Activity {
 
-    // calories
+    // calorie
     private int calories;
-    // activity description
+    // descrizione attività
     private String description;
-    // distance (km)
+    // distanza (km)
     private int distance;
     // steps
     private int steps;
 
-    /* Getters */
     public int getCalories() {
         return calories;
     }
