@@ -114,11 +114,11 @@ public class FitbitClient {
             while (true) {
 
                 startTime = getTime();
-                Thread.sleep(2000);
+                Thread.sleep(5000);
                 endTime = getTime();
 
                 System.out.println("Tempo di start " + startTime + " , tempo di end " + endTime);
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             }
         }
         catch(Exception e){
