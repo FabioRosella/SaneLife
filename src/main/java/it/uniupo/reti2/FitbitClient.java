@@ -9,10 +9,42 @@ import it.uniupo.reti2.Models.Activities.Activities;
 import it.uniupo.reti2.Models.Profile.Profile;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 public class FitbitClient {
 
     private static final Gson gson = new Gson();
+    private static String startTime = "";
+    private static String endTime = "";
+
+    //------------------------------------------------------------------------------------------------------------------
+    // MAIN
+    //------------------------------------------------------------------------------------------------------------------
+
+    public static void main(String[] args) {
+        try {
+            // Crea l'autorizzazione con un flusso
+            final Credential credential = OAuthCredentials.authorize();
+            // inizializza la richiesta
+            HttpRequestFactory requestFactory =
+                    OAuthCredentials.getHttpTransport().createRequestFactory((HttpRequest request) -> {
+                        credential.initialize(request);
+                        request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
+                    });
+            // Siamo Loggati
+            profile(requestFactory);
+            startingActivities();
+            //run(requestFactory);
+            // Success!
+            return;
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        System.exit(1);
+
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     // Effettua la richiesta al FitBit.
@@ -36,38 +68,10 @@ public class FitbitClient {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    // MAIN
-    //------------------------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) {
-        try {
-            // Crea l'autorizzazione con un flusso
-            final Credential credential = OAuthCredentials.authorize();
-            // inizializza la richiesta
-            HttpRequestFactory requestFactory =
-                    OAuthCredentials.getHttpTransport().createRequestFactory((HttpRequest request) -> {
-                        credential.initialize(request);
-                        request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
-                    });
-            // Siamo Loggati
-            Profile(requestFactory);
-            run(requestFactory);
-            // Success!
-            return;
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        System.exit(1);
-
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
     // Recupera i dati dell'account del paziente così da stampare nome peso ecc..
     //------------------------------------------------------------------------------------------------------------------
 
-    public static void Profile(HttpRequestFactory requestFactory) throws IOException {
+    public static void profile(HttpRequestFactory requestFactory) throws IOException {
 
         GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/profile.json");
         // Get request
@@ -84,15 +88,14 @@ public class FitbitClient {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    // Funzione di test per i thread
+    // Funzione che avvia tutte le attività che vengono eseguite per monitorare il paziente
     //------------------------------------------------------------------------------------------------------------------
-    /*private static void test(){
 
-        System.out.print("Questa e' una funzione di test per i thread");
+    private static void startingActivities(){
 
         Thread monitoringThread = new Thread(() -> {
             try{
-                printSomething();
+                monitoringHearthBeat();
             }
             catch(Exception e){
                 System.err.println(e.getMessage());
@@ -102,17 +105,37 @@ public class FitbitClient {
         monitoringThread.start();
     }
 
-    private static void printSomething(){
+    //------------------------------------------------------------------------------------------------------------------
+    // Monitora il battito cardiaco del paziente
+    //------------------------------------------------------------------------------------------------------------------
+
+    private static void monitoringHearthBeat(){
         try {
             while (true) {
-                System.out.println("TEST");
-                Thread.sleep(1000);
+
+                startTime = getTime();
+                Thread.sleep(2000);
+                endTime = getTime();
+
+                System.out.println("Tempo di start " + startTime + " , tempo di end " + endTime);
+                Thread.sleep(3000);
             }
         }
         catch(Exception e){
             System.err.println(e.getMessage());
         }
-    }*/
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Funzione che recupera l'ora corrente
+    //------------------------------------------------------------------------------------------------------------------
+
+    private static String getTime() {
+
+        LocalTime time = LocalTime.now();
+
+        return time.toString().replace(".","-").split("-")[0];
+    }
 }
 
 

@@ -1,4 +1,4 @@
-package it.uniupo.reti2.philipsHue;
+package it.uniupo.reti2.PhilipsHue;
 
 import java.util.Map;
 
