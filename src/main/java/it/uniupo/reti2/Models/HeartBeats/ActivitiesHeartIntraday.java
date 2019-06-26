@@ -21,4 +21,24 @@ public class ActivitiesHeartIntraday {
             System.out.println("Battito ricevuto : " + beat.getValue());
         }
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effettua una media aritmetica dei battiti recuperati nella fascia di tempo selezionata
+    //------------------------------------------------------------------------------------------------------------------
+
+    public int getAvgBeats(){
+
+        if(dataset == null || dataset.size() == 0)
+            return 0;
+
+        int n = 0;
+        int count=0;
+
+        for(ValueIntraday beat : dataset) {
+            n = n + beat.getValue();
+            count ++;
+        }
+
+        return n/count;
+    }
 }

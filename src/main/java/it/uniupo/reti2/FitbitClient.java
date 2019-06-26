@@ -112,6 +112,7 @@ public class FitbitClient {
 
     private static void monitoringHearthBeat(HttpRequestFactory requestFactory){
         HeartBeats heartbeats = null;
+        int beats;
 
         try {
             while (true) {
@@ -125,6 +126,15 @@ public class FitbitClient {
                 heartbeats = getHeartBeats(requestFactory,startTime,endTime);
 
                 heartbeats.getActivitiesHeartIntraday().printBeats();
+                beats = heartbeats.getActivitiesHeartIntraday().getAvgBeats();
+
+                System.out.println("Media dei battiti : " + beats);
+
+                if(beats >= Configurations.MaxHertBeat){
+
+                    //Facciamo partire la cromoterapia
+                    //Implements
+                }
 
                 Thread.sleep(5000);
             }
@@ -140,7 +150,7 @@ public class FitbitClient {
 
     private static String getTime() {
 
-        LocalTime time = LocalTime.now().minusMinutes(5);
+        LocalTime time = LocalTime.now().minusMinutes(Configurations.Sync);
 
         return time.toString().replace(".","-").split("-")[0];
     }
