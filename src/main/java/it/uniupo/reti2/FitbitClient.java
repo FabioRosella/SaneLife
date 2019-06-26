@@ -6,6 +6,7 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.gson.Gson;
 import it.uniupo.reti2.FitbitCredentials.OAuthCredentials;
 import it.uniupo.reti2.Models.Activities.Activities;
+import it.uniupo.reti2.Models.HeartBeats.HeartBeats;
 import it.uniupo.reti2.Models.Profile.Profile;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class FitbitClient {
                     });
             // Siamo Loggati
             profile(requestFactory);
-            startingActivities();
+            startingActivities(requestFactory);
             //run(requestFactory);
             // Success!
             return;
@@ -91,11 +92,11 @@ public class FitbitClient {
     // Funzione che avvia tutte le attività che vengono eseguite per monitorare il paziente
     //------------------------------------------------------------------------------------------------------------------
 
-    private static void startingActivities(){
+    private static void startingActivities(HttpRequestFactory requestFactory){
 
         Thread monitoringThread = new Thread(() -> {
             try{
-                monitoringHearthBeat();
+                monitoringHearthBeat(requestFactory);
             }
             catch(Exception e){
                 System.err.println(e.getMessage());
@@ -109,7 +110,9 @@ public class FitbitClient {
     // Monitora il battito cardiaco del paziente
     //------------------------------------------------------------------------------------------------------------------
 
-    private static void monitoringHearthBeat(){
+    private static void monitoringHearthBeat(HttpRequestFactory requestFactory){
+        HeartBeats heartbeats = null;
+
         try {
             while (true) {
 
@@ -118,6 +121,11 @@ public class FitbitClient {
                 endTime = getTime();
 
                 System.out.println("Tempo di start " + startTime + " , tempo di end " + endTime);
+
+                heartbeats = getHeartBeats(requestFactory,startTime,endTime);
+
+                heartbeats.getActivitiesHeartIntraday().printBeats();
+
                 Thread.sleep(5000);
             }
         }
@@ -132,9 +140,26 @@ public class FitbitClient {
 
     private static String getTime() {
 
-        LocalTime time = LocalTime.now();
+        LocalTime time = LocalTime.now().minusMinutes(5);
 
         return time.toString().replace(".","-").split("-")[0];
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Effettua una chiamata alla API di fitbit per recuperare i battiti del paziente in un range orario
+    //------------------------------------------------------------------------------------------------------------------
+
+    private static HeartBeats getHeartBeats(HttpRequestFactory requestFactory, String start,String end) throws IOException {
+
+        GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1sec/time/" + start + "/" + end + ".json");
+        // Get request
+        HttpRequest request = requestFactory.buildGetRequest(url);
+
+        String jsonResponse = request.execute().parseAsString();
+
+        HeartBeats heartbeats = gson.fromJson(jsonResponse, HeartBeats.class);
+
+        return heartbeats;
     }
 }
 

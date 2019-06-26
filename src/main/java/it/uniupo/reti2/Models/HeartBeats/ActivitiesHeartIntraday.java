@@ -13,6 +13,10 @@ public class ActivitiesHeartIntraday {
     //------------------------------------------------------------------------------------------------------------------
 
     public void printBeats(){
+
+        if(dataset == null)
+            return;
+
         for (ValueIntraday beat : dataset) {
             System.out.println("Battito ricevuto : " + beat.getValue());
         }

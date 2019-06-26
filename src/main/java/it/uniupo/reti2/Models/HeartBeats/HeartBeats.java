@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class HeartBeats {
 
     @SerializedName("activities-heart-intraday")
-    private ActivitiesHeartIntraday activitiesHeartIntraday;
+    private ActivitiesHeartIntraday activitiesHeartIntraday = null;
 
     public ActivitiesHeartIntraday getActivitiesHeartIntraday() { return activitiesHeartIntraday; }
 }
