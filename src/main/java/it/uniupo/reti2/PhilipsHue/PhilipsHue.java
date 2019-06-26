@@ -4,7 +4,11 @@ import java.util.Map;
 
 public class PhilipsHue {
 
-	private final String URL  = "http://127.0.0.1:8000";
+	/*private final String URL  = "http://127.0.0.1:8000";
+	private final String user = "newdeveloper";
+	 */
+	//per i test
+	String URL = "http://localhost:8000";
 	private final String user = "newdeveloper";
 
 	private String lightURL = URL + "/api/" + user + "/lights/";
@@ -27,7 +31,6 @@ public class PhilipsHue {
 		String call = lightURL + "/state";
 		String body = "{\"on\": true, \"bri\" : 254, \"sat\":254, \"hue\" : " + color + "}";
 		RestCall.put(call, body, "application/json");
-		turnOffLight();
 	}
 
 	public void turnOffLight() {
