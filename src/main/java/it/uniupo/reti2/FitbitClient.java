@@ -106,6 +106,7 @@ public class FitbitClient {
         });
 
         monitoringThread.start();
+        monitoringBatteryDevice(requestFactory);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -179,6 +180,14 @@ public class FitbitClient {
         HeartBeats heartbeats = gson.fromJson(jsonResponse, HeartBeats.class);
 
         return heartbeats;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Monitora lo status del device monitorando la sua batteria
+    //------------------------------------------------------------------------------------------------------------------
+
+    private static void monitoringBatteryDevice(HttpRequestFactory requestFactory){
+
     }
 }
 
