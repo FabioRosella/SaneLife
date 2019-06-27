@@ -9,6 +9,7 @@ import it.uniupo.reti2.Models.Activities.Activities;
 import it.uniupo.reti2.Models.HeartBeats.HeartBeats;
 import it.uniupo.reti2.Models.Profile.Profile;
 import it.uniupo.reti2.PhilipsHue.PhilipsHue;
+import it.uniupo.reti2.Models.Devices.Device;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -94,7 +95,7 @@ public class FitbitClient {
     // Funzione che avvia tutte le attività che vengono eseguite per monitorare il paziente
     //------------------------------------------------------------------------------------------------------------------
 
-    private static void startingActivities(HttpRequestFactory requestFactory){
+    private static void startingActivities(HttpRequestFactory requestFactory) throws IOException {
 
         Thread monitoringThread = new Thread(() -> {
             try{
@@ -143,7 +144,12 @@ public class FitbitClient {
                     System.out.println("Cromoterapia completata!");
                 }
                 else{
-                    System.out.print("Battito nella norma!");
+                    if(beats <= Configurations.MinHeartBeat){
+                        System.out.println("Battiti bassi!");
+                    }
+                    else{
+                        System.out.println("Battito nella norma!");
+                    }
                 }
 
                 Thread.sleep(5000);
@@ -186,8 +192,27 @@ public class FitbitClient {
     // Monitora lo status del device monitorando la sua batteria
     //------------------------------------------------------------------------------------------------------------------
 
-    private static void monitoringBatteryDevice(HttpRequestFactory requestFactory){
+    private static void monitoringBatteryDevice(HttpRequestFactory requestFactory) throws IOException {
 
+        try{
+            while(true) {
+                GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/devices.json");
+                // Get request
+                HttpRequest request = requestFactory.buildGetRequest(url);
+
+                String jsonResponse = request.execute().parseAsString();
+
+                System.out.println("DEBUG : " + jsonResponse);
+                /*Device devs = gson.fromJson(jsonResponse, Device.class);
+
+                System.out.println("Id del dispositivo : " + devs.getId() + "\nBatteria disponibile : " + devs.getBattery());*/
+
+                Thread.sleep(10000);
+            }
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }
 

@@ -4,6 +4,7 @@ public class Configurations {
 
     //Battito limite sopra al quale viene effettuata la cromoterapia
     public static final int MaxHertBeat = 100;
+    public static final int MinHeartBeat = 40;
     public static final int Sync = 5;
     public static final int TimeCromo = 20000;
 }
