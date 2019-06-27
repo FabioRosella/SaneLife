@@ -47,21 +47,6 @@ public class PhilipsHue {
 		RestCall.put(call, body, "application/json");
 	}
 
- /* cromoterapia da eliminare o modifica?
-  *  public void waitLoop(int durata_cromoterapia) {
-		for (int i = 0; i < durata_cromoterapia; i++) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			System.out.println(durata_cromoterapia - i);
-		}
-
-		colorloop = false;
-		turnOffLight();
-	}
-*/
 	public Integer getId() { return id; }
 	public boolean getColorloop() { return colorloop; }
 	public void setColorloop(boolean colorloop) { this.colorloop = colorloop; }

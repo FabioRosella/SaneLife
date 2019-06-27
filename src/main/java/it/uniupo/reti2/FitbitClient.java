@@ -8,6 +8,7 @@ import it.uniupo.reti2.FitbitCredentials.OAuthCredentials;
 import it.uniupo.reti2.Models.Activities.Activities;
 import it.uniupo.reti2.Models.HeartBeats.HeartBeats;
 import it.uniupo.reti2.Models.Profile.Profile;
+import it.uniupo.reti2.PhilipsHue.PhilipsHue;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ public class FitbitClient {
     private static final Gson gson = new Gson();
     private static String startTime = "";
     private static String endTime = "";
+    private static PhilipsHue light = new PhilipsHue(1);
 
     //------------------------------------------------------------------------------------------------------------------
     // MAIN
@@ -133,7 +135,14 @@ public class FitbitClient {
                 if(beats >= Configurations.MaxHertBeat){
 
                     //Facciamo partire la cromoterapia
-                    //Implements
+                    System.out.println("\nBattiti alti --> Cromoterapia rilassante Avviata!");
+                    light.turnColorloopOn();
+                    Thread.sleep(Configurations.TimeCromo);
+                    light.turnOffLight();
+                    System.out.println("Cromoterapia completata!");
+                }
+                else{
+                    System.out.print("Battito nella norma!");
                 }
 
                 Thread.sleep(5000);
