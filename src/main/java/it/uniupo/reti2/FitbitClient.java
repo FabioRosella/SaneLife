@@ -20,6 +20,7 @@ public class FitbitClient {
     private static String startTime = "";
     private static String endTime = "";
     private static PhilipsHue light = new PhilipsHue(1);
+    private static PhilipsHue lightBattery = new PhilipsHue(2);
 
     //------------------------------------------------------------------------------------------------------------------
     // MAIN
@@ -36,6 +37,7 @@ public class FitbitClient {
                         request.setParser(new JsonObjectParser(OAuthCredentials.getJsonFactory()));
                     });
             // Siamo Loggati
+            light.turnOffLight();
             profile(requestFactory);
             startingActivities(requestFactory);
             //run(requestFactory);
@@ -141,14 +143,14 @@ public class FitbitClient {
                     light.turnColorloopOn();
                     Thread.sleep(Configurations.TimeCromo);
                     light.turnOffLight();
-                    System.out.println("Cromoterapia completata!");
+                    System.out.println("Cromoterapia completata!\n");
                 }
                 else{
                     if(beats <= Configurations.MinHeartBeat){
-                        System.out.println("Battiti bassi!");
+                        System.out.println("Battiti bassi!\n");
                     }
                     else{
-                        System.out.println("Battito nella norma!");
+                        System.out.println("Battito nella norma!\n");
                     }
                 }
 
@@ -201,13 +203,30 @@ public class FitbitClient {
                 HttpRequest request = requestFactory.buildGetRequest(url);
 
                 String jsonResponse = request.execute().parseAsString();
+                jsonResponse = jsonResponse.replace("[", "").replace("]","").replace(",\"features\":","");
 
-                System.out.println("DEBUG : " + jsonResponse);
-                /*Device devs = gson.fromJson(jsonResponse, Device.class);
+                //System.out.println("DEBUG : " + jsonResponse);
+                Device devs = gson.fromJson(jsonResponse, Device.class);
 
-                System.out.println("Id del dispositivo : " + devs.getId() + "\nBatteria disponibile : " + devs.getBattery());*/
+                System.out.println("Percentuale di batteria rimasta: " + devs.getBatteryLevel() + "%\nBatteria disponibile : " + devs.getBattery() + "\n");
 
-                Thread.sleep(10000);
+
+                if(devs.getBatteryLevel() >= 60){
+                    //lightBattery.turnOnLight(2);
+                    System.out.println("LUCE VERDE\n");
+                }
+                else{
+                    if(devs.getBatteryLevel() >= 15){
+                        //lightBattery.turnOnLight(3);
+                        System.out.println("LUCE GIALLA\n");
+                    }
+                    else{
+                        //lightBattery.turnOnLight(4);
+                        System.out.println("LUCE ROSSA\n");
+                    }
+                }
+
+                Thread.sleep(40000);
             }
         }
         catch(Exception e){
