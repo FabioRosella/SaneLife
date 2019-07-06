@@ -7,4 +7,5 @@ public class Configurations {
     public static final int MinHeartBeat = 40;
     public static final int Sync = 5;
     public static final int TimeCromo = 20000;
+
 }

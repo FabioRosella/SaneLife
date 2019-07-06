@@ -6,10 +6,11 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.gson.Gson;
 import it.uniupo.reti2.FitbitCredentials.OAuthCredentials;
 import it.uniupo.reti2.Models.Activities.Activities;
+import it.uniupo.reti2.Models.Devices.Device;
 import it.uniupo.reti2.Models.HeartBeats.HeartBeats;
 import it.uniupo.reti2.Models.Profile.Profile;
+import it.uniupo.reti2.PhilipsHue.Colors;
 import it.uniupo.reti2.PhilipsHue.PhilipsHue;
-import it.uniupo.reti2.Models.Devices.Device;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -138,6 +139,8 @@ public class FitbitClient {
 
                 if(beats >= Configurations.MaxHertBeat){
 
+                    //Inviamo una mail al dottore per informarlo
+
                     //Facciamo partire la cromoterapia
                     System.out.println("\nBattiti alti --> Cromoterapia rilassante Avviata!");
                     light.turnColorloopOn();
@@ -212,16 +215,16 @@ public class FitbitClient {
 
 
                 if(devs.getBatteryLevel() >= 60){
-                    //lightBattery.turnOnLight(2);
+                    lightBattery.turnOnLight(Colors.green.getValue());
                     System.out.println("LUCE VERDE\n");
                 }
                 else{
                     if(devs.getBatteryLevel() >= 15){
-                        //lightBattery.turnOnLight(3);
+                        lightBattery.turnOnLight(Colors.yellow.getValue());
                         System.out.println("LUCE GIALLA\n");
                     }
                     else{
-                        //lightBattery.turnOnLight(4);
+                        lightBattery.turnOnLight(Colors.red.getValue());
                         System.out.println("LUCE ROSSA\n");
                     }
                 }

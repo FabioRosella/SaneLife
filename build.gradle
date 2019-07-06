@@ -22,4 +22,7 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.28.0'
     //support apace library
     implementation 'org.apache.httpcomponents:httpclient:4.5.9'
+    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.0'
+
 }

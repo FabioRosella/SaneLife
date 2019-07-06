@@ -29,7 +29,7 @@ public class PhilipsHue {
 		colorloop = false;
 
 		String call = lightURL + "/state";
-		String body = "{\"on\": true, \"bri\" : 254, \"sat\":254, \"hue\" : " + color + "}";
+		String body = "{\"on\": true, \"bri\" : 254, \"sat\":180, \"hue\" : " + color + "}";
 		RestCall.put(call, body, "application/json");
 	}
 
