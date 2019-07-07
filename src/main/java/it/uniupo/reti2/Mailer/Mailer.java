@@ -68,5 +68,4 @@ public class Mailer {
             System.out.println("Email sent successfully.");
         }
 
-*/
 }
