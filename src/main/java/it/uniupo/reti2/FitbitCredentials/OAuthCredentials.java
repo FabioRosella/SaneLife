@@ -1,7 +1,8 @@
 package it.uniupo.reti2.FitbitCredentials;
 
 //----------------------------------------------------------------------------------------------------------------------
-// Classe che salva tutte le credenziali e dati necessari per l'autenticazione con il Fitbit
+// Classe che salva tutte le credenziali e dati necessari per l'autenticazione con il Fitbit tramite OAuth
+// Effettua l'autenticazione e l'autorizzazione ad accedere all'account
 //----------------------------------------------------------------------------------------------------------------------
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
@@ -22,9 +23,12 @@ import java.util.ArrayList;
 
 public final class OAuthCredentials {
 
+	// Dati di accesso univoci all'account, recuperati registrando una nuova applicazione dal sito web fitbit
     private static final String CLIENT_ID = "22DLXH";
     private static final String CLIENT_SECRET = "60333f59d244b6decc6dbd07c6c30951";
     private static final int PORT = 6789;
+	
+	// Location domain dove girerà l'applicazione, localhost perchè non verrà pubblicata
     private static final String DOMAIN = "localhost";
 
     // server URLs, as provided by Fitbit
