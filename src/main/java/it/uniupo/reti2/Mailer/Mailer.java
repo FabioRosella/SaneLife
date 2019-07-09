@@ -7,22 +7,22 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class Mailer {
-
         Properties emailProperties;
         Session mailSession;
         MimeMessage emailMessage;
 
-        public static void main(String args[]) throws AddressException,
+       /*public static void main(String args[]) throws AddressException,
                 MessagingException {
 
-            JavaEmail javaEmail = new JavaEmail();
+            Mailer javaEmail = new Mailer();
 
             javaEmail.setMailServerProperties();
             javaEmail.createEmailMessage();
             javaEmail.sendEmail();
-        }
+        }*/
 
         public void setMailServerProperties() {
 
@@ -37,11 +37,11 @@ public class Mailer {
 
         public void createEmailMessage() throws AddressException,
                 MessagingException {
-            String[] toEmails = { "joe@javapapers.com" };
-            String emailSubject = "Java Email";
-            String emailBody = "This is an email sent by JavaMail api.";
+            String[] toEmails = { "daniel.colaianni96@gmail.com" };
+            String emailSubject = "Paziente con battiti elevati";
+            String emailBody = "La presente per avvertirla che il suo paziente non si sente bene e avviata cromoterapia.";
 
-            mailSession = Session.getDefaultInstance(emailProperties, null);
+            mailSession = Session.getDefaultInstance(emailProperties);
             emailMessage = new MimeMessage(mailSession);
 
             for (int i = 0; i < toEmails.length; i++) {
@@ -49,24 +49,23 @@ public class Mailer {
             }
 
             emailMessage.setSubject(emailSubject);
-            emailMessage.setContent(emailBody, "text/html");//for a html email
-            //emailMessage.setText(emailBody);// for a text email
+            emailMessage.setContent(emailBody, "text/html");
 
         }
 
         public void sendEmail() throws AddressException, MessagingException {
 
             String emailHost = "smtp.gmail.com";
-            String fromUser = "your emailid here";//just the id alone without @gmail.com
-            String fromUserEmailPassword = "your email password here";
+            String fromUser = "20013844@studenti.uniupo.it";
+            String fromUserEmailPassword = "dani1996";
 
             Transport transport = mailSession.getTransport("smtp");
 
             transport.connect(emailHost, fromUser, fromUserEmailPassword);
             transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
             transport.close();
-            System.out.println("Email sent successfully.");
+            System.out.println("Inviata mail al medico");
         }
 
-*/
+
 }

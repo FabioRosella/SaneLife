@@ -5,7 +5,7 @@ import com.google.api.client.http.*;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.gson.Gson;
 import it.uniupo.reti2.FitbitCredentials.OAuthCredentials;
-import it.uniupo.reti2.Models.Activities.Activities;
+import it.uniupo.reti2.Mailer.Mailer;
 import it.uniupo.reti2.Models.Devices.Device;
 import it.uniupo.reti2.Models.HeartBeats.HeartBeats;
 import it.uniupo.reti2.Models.Profile.Profile;
@@ -43,7 +43,6 @@ public class FitbitClient {
             light.turnOffLight();
             profile(requestFactory);
             startingActivities(requestFactory);
-            //run(requestFactory);
             // Success!
             return;
         } catch (IOException e) {
@@ -53,27 +52,6 @@ public class FitbitClient {
         }
         System.exit(1);
 
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Effettua la richiesta al FitBit.
-    // In questo caso, restituisce tutte le attività dell'utente per un giorno specifico.
-    //------------------------------------------------------------------------------------------------------------------
-
-    private static void run(HttpRequestFactory requestFactory) throws IOException {
-        // Url da chiamare (API)
-        GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/activities/date/2018-05-24.json");
-        // Get request
-        HttpRequest request = requestFactory.buildGetRequest(url);
-
-        String jsonResponse = request.execute().parseAsString();
-
-        //System.out.println("DEBUG " + jsonResponse);
-        // Serializza l'oggetto Json che arriva come risposta
-        Activities activities = gson.fromJson(jsonResponse, Activities.class);
-
-        // Stampa i passi della giornata ricevuti dall'oggetto JSON
-        System.out.println(activities.getSummary().getSteps() + " passi");
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -153,8 +131,10 @@ public class FitbitClient {
                 if(beats >= Configurations.MaxHertBeat){
 
                     //Inviamo una mail al dottore per informarlo
-					//if troppo alti allora mandiamo poi la mail
-					
+                    Mailer javaEmail = new Mailer();
+                    javaEmail.setMailServerProperties();
+                    javaEmail.createEmailMessage();
+                    javaEmail.sendEmail();
                     //Facciamo partire la cromoterapia
                     System.out.println("\nBattiti alti --> Cromoterapia rilassante Avviata!");
                     light.turnColorloopOn();
