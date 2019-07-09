@@ -66,6 +66,4 @@ public class Mailer {
             transport.close();
             System.out.println("Inviata mail al medico");
         }
-
-
 }

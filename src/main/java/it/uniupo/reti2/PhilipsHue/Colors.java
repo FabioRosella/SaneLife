@@ -5,7 +5,6 @@ public enum Colors {
     green(24845),
     yellow(10000),
     blue(34277);
-    ;
     private final int value;
 
     Colors(int value) {
