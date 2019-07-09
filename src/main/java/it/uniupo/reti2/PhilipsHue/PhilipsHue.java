@@ -4,12 +4,12 @@ import java.util.Map;
 
 public class PhilipsHue {
 
-	/*private final String URL  = "http://127.0.0.1:8000";
+	private final String URL  = "http://127.0.0.1:8000";
 	private final String user = "newdeveloper";
-	 */
 	//per i test
+	/*
 	String URL = "http://localhost:8000";
-	private final String user = "newdeveloper";
+	private final String user = "newdeveloper";*/
 
 	private String lightURL = URL + "/api/" + user + "/lights/";
 	private Map<String, ?> allLights;
