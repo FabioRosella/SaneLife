@@ -4,8 +4,8 @@ import java.util.Map;
 
 public class PhilipsHue {
 
-	private final String URL  = "http://127.0.0.1:8000";
-	private final String user = "newdeveloper";
+	private final String URL  = "http://172.30.1.138:80";
+	private final String user = "Ugb7HMqMlfrsN7m2gzvWIwzgoNefeFPrUVgt5TmE";
 	//per i test
 	/*
 	String URL = "http://localhost:8000";
