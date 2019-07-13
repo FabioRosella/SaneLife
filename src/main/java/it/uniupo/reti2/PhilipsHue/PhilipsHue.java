@@ -6,10 +6,10 @@ public class PhilipsHue {
 
 	private final String URL  = "http://172.30.1.138:80";
 	private final String user = "Ugb7HMqMlfrsN7m2gzvWIwzgoNefeFPrUVgt5TmE";
+
 	//per i test
-	/*
-	String URL = "http://localhost:8000";
-	private final String user = "newdeveloper";*/
+	//String URL = "http://localhost:8000";
+	//private final String user = "newdeveloper";
 
 	private String lightURL = URL + "/api/" + user + "/lights/";
 	private Map<String, ?> allLights;

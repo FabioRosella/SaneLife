@@ -20,6 +20,10 @@ public class FitbitClient {
     private static final Gson gson = new Gson();
     private static String startTime = "";
     private static String endTime = "";
+
+    //Contatore che indica dopo quando è possibile rimandare una mail così da non intasare la sua casella mail
+    private static int TimeResendEmail = 0;
+
 	//Inizializzazione della luce per monitorare i battiti ed effettuare una cromoterapia
     private static PhilipsHue light = new PhilipsHue(1);
 	//Inizializzazione della luce per monitorare la batteria del dispositivo
@@ -128,13 +132,20 @@ public class FitbitClient {
 				//Stampa la media dei battiti recuperati all'interno dell'intervallo
                 System.out.println("Media dei battiti : " + beats);
 
-                if(beats >= Configurations.MaxHertBeat){
+                if(beats >= Configurations.MaxHeartBeat){
 
-                    //Inviamo una mail al dottore per informarlo
-                    Mailer javaEmail = new Mailer();
-                    javaEmail.setMailServerProperties();
-                    javaEmail.createEmailMessage();
-                    javaEmail.sendEmail();
+                    //Se i battiti superano la soglia limite mandiamo anche una mail al dottore
+                    if((beats >= Configurations.LimitHeartBeat) && (TimeResendEmail == 0))
+                    {
+                        //Inviamo una mail al dottore per informarlo
+                        Mailer javaEmail = new Mailer();
+                        javaEmail.setMailServerProperties();
+                        javaEmail.createEmailMessage();
+                        javaEmail.sendEmail();
+
+                        //Setto il timeout per non continuare a reinviare mail al dottore
+                        TimeResendEmail = Configurations.TimeResendMail;
+                    }
                     //Facciamo partire la cromoterapia
                     System.out.println("\nBattiti alti --> Cromoterapia rilassante Avviata!");
                     light.turnColorloopOn();
@@ -142,7 +153,11 @@ public class FitbitClient {
                     Thread.sleep(Configurations.TimeCromo);
 					//Spegnamo le luci
                     light.turnOffLight();
+
                     System.out.println("Cromoterapia completata!\n");
+
+                    //Aspettiamo 30 secondi per verificare che la cromoterapia sia andata a buon fine
+                    Thread.sleep(30000);
                 }
                 else{
 					//Mostriamo dei messaggi se i battiti sono ok o troppo bassi
@@ -155,7 +170,11 @@ public class FitbitClient {
                 }
 				
 				//Aspettiamo 5 secondi per effettuare la prossima monitorazione
-                Thread.sleep(5000);
+                Thread.sleep(15000);
+
+                //Se il timeout delle mail non è azzerato allora devo decrementarlo
+                if(TimeResendEmail != 0)
+                    TimeResendEmail--;
             }
         }
         catch(Exception e){
@@ -215,21 +234,18 @@ public class FitbitClient {
 				//A seconda della batteria rimanente accende una luce diversa
                 if(devs.getBatteryLevel() >= 60){
                     lightBattery.turnOnLight(Colors.green.getValue());
-                    System.out.println("LUCE VERDE\n");
                 }
                 else{
                     if(devs.getBatteryLevel() >= 15){
                         lightBattery.turnOnLight(Colors.yellow.getValue());
-                        System.out.println("LUCE GIALLA\n");
                     }
                     else{
                         lightBattery.turnOnLight(Colors.red.getValue());
-                        System.out.println("LUCE ROSSA\n");
                     }
                 }
 				
 				//Effettua un controllo sulla batteria ogni 5 minuti
-                Thread.sleep(300000);
+                Thread.sleep(Configurations.TimeMonitoringBattery * 60000);
             }
         }
         catch(Exception e){
