@@ -29,6 +29,9 @@ public class FitbitClient {
 	//Inizializzazione della luce per monitorare la batteria del dispositivo
     private static PhilipsHue lightBattery = new PhilipsHue(2);
 
+    //Inizializzazione degli orari dove il paziente deve assumere le proprie medicine
+    private static final String[] timemedicine = {"7:55-8:00","19:45-20:00"};
+
     //------------------------------------------------------------------------------------------------------------------
     // MAIN
     //------------------------------------------------------------------------------------------------------------------
@@ -85,6 +88,8 @@ public class FitbitClient {
     //------------------------------------------------------------------------------------------------------------------
 
     private static void startingActivities(HttpRequestFactory requestFactory) throws IOException {
+
+        initAlarms(requestFactory);
 
         Thread monitoringThread = new Thread(() -> {
             try{
@@ -249,6 +254,35 @@ public class FitbitClient {
             }
         }
         catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Setta gli allarmi del fitbit per tutta la settimana, così da ricordare al paziente l'assunzione delle proprie
+    // medicine
+    //------------------------------------------------------------------------------------------------------------------
+
+    private static void initAlarms(HttpRequestFactory requestFactory) throws IOException {
+
+        try {
+
+            /*for (int i = 0; i < timemedicine.length; i++) {
+                //Inizializzo la stringa di connessione
+                GenericUrl url = new GenericUrl("https://api.fitbit.com/1/user/-/devices/tracker/843203894/alarms.json?time=\"" + timemedicine[i] + "\"&enabled=\"true\"&recurring=\"false\"&weekDays=\"Monday\"");
+                //Inizializzo la richiesta con la stringa di connessione
+                HttpRequest request = requestFactory.buildGetRequest(url);
+
+                //Effettuo una richiesta in post
+                request.setRequestMethod("POST");
+
+                String jsonResponse = request.execute().parseAsString();
+            }*/
+
+            //Mostro messaggio che conferma il setting degli allarmi
+            System.out.println("Allarmi Settati\n");
+        }
+        catch(Error e){
             System.err.println(e.getMessage());
         }
     }
